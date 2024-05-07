@@ -1,0 +1,391 @@
+﻿@model List<CasoModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h1 class="mt-5">Gestionar Casos</h1>
+    <button type="button" id="" class="btn btn-outline-secondary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#crearcaso" value="">
+        Nuevo caso
+    </button>
+    <div class="row row-cols-auto " style="justify-content:center;">
+
+        @foreach(CasoModel a in Model){
+            if(a.ESTADO_CASOREPORTADO == 1)
+            {
+                <div class="col mt-5">
+                    <div class="card" style="width: 20rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">@a.NOMBRE_PACIENTE</h5>
+                            <p class="card-text">@a.DESCRIPCION_CASOREPORTADO</p>
+                            <button type="button" class="btn btn-outline-primary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#editarcaso" value="@a.ID_CASOREPORTADO" id="edit">
+                                Editar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        
+    </div>
+
+</div>
+
+<div class="modal fade" id="crearcaso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="crearcasolabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg modal-dialog-scrollable">
+        <div class="modal-content bg">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5 text-center" id="staticBackdropLabel">
+                    Crear caso
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="crear" method="post" action="@Url.Action("crearcaso","Caso")">
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="" class="form-label ">Usuario</label>
+                                <input type="text" name="busqueda" class="form-control" onchange="" id="filtro"></input>
+                            </div>
+                            <div class="col">
+                                <table id="ta" class="table-bordered align-middle border-primary mt-3">
+                                    <thead>
+                                    <th class="text-center" style="width: 10%;">Nombre</th>
+                                    <th class="text-center " style="width: 10%;">Tipo de sangre</th>
+                                    <th class="text-center " style="width: 10%;">Seleccionar</th>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="row mt-3 ms-sm-0 me-2">
+                           @*  <label for="" class="form-label">Sintomas</label>
+                            <div class=" col">
+                                <div class="row row-cols-2 " style="justify-content:center;">
+                                    @foreach (SintomaModel s in ViewBag.sintomas)
+                                    {
+                                        <div class="col mt-1">
+                                            <div class="form-check" >
+                                                <input class="form-check-input" type="checkbox" value="@s.ID_SINTOMA" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    @s.NOMBRE_SINTOMA
+                                                </label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div> *@
+                            
+                            <div class="row">
+                                <label for="" class="form-label">Tipo Dengue</label>
+                                <select class="form-select" aria-label="Default select example" required name="FK_ID_TIPODENGUE">
+                                    @foreach (TipoDengueModel td in ViewBag.tipoDengue)
+                                    {
+                                        <option value="@td.ID_TIPODENGUE">@td.NOMBRE_TIPODENGUE</option>
+                                    } 
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="" class="form-label">Departamento</label>
+                                <select class="form-select" aria-label="Default select example" id="departa" required>
+                                    <option>Seleccione</option>
+                                    @foreach (DepartamentoModel td in ViewBag.departamento)
+                                    {
+                                        <option value="@td.ID_DEPARTAMENTO">@td.NOMBRE_DEPARTAMENTO</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="" class="form-label">Municipio</label>
+                                <select class="form-select" aria-label="Default select example" disabled id="muni" required name="" >
+                                    <option>
+                                        seleccione
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="" class="form-label">Hospital</label>
+                                <select class="form-select" aria-label="Default select example" id="hospi" required disabled name="FK_ID_HOSPITAL">
+                                    <option>
+                                        seleccione
+                                    </option>
+
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="" class="form-label">Descripcion</label>
+                                <textarea class="form-control" aria-label="Default select example" id="" name="DESCRIPCION_CASOREPORTADO">
+                                    
+                                </textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="crear" class="btn btn-success">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editarcaso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editarcaso" aria-hidden="true">
+    <div class="modal-dialog  modal-lg modal-dialog-scrollable">
+        <div class="modal-content bg">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5 text-center" id="staticBackdropLabel">
+                    Editar caso
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="editar" method="post" action="@Url.Action("actualizar","Caso")">
+                        <input name="ID_CASOREPORTADO" id="idedit" hidden></input>
+                        <div class="row mt-2">
+                            <h2 class="h2 col text-center">Usuario :</h2>
+                            <h2 class="h2 col " id="nombre"></h2>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="row">
+                                <label for="" class="form-label">Tipo Dengue</label>
+                                <select class="form-select" aria-label="Default select example" id="tipodenEdi" required name="FK_ID_TIPODENGUE">
+                                    @foreach (TipoDengueModel td in ViewBag.tipoDengue)
+                                    {
+                                        <option value="@td.ID_TIPODENGUE">@td.NOMBRE_TIPODENGUE</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="" class="form-label">Departamento</label>
+                                <select class="form-select" aria-label="Default select example" id="departaEdi" required>
+                                    <option>Seleccione</option>
+                                    @foreach (DepartamentoModel td in ViewBag.departamento)
+                                    {
+                                        <option value="@td.ID_DEPARTAMENTO">@td.NOMBRE_DEPARTAMENTO</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="" class="form-label">Municipio</label>
+                                <select class="form-select" aria-label="Default select example"  id="muniEdi"  required name="">
+                                    <option>
+                                        seleccione
+                                    </option>
+                                    @foreach (MunicipioModel td in ViewBag.muni)
+                                    {
+                                        <option value="@td.ID_MUNICIPIO" data-departamento="@td.FK_ID_DEPARTAMENTO">@td.NOMBRE_MUNICIPIO</option>
+                                    }
+                                    
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="" class="form-label">Hospital</label>
+                                <select class="form-select" aria-label="Default select example" id="hospiEdi" required name="FK_ID_HOSPITAL">
+                                    <option>
+                                        seleccione
+                                    </option>
+                                    @foreach (HospitalModel td in ViewBag.hospital)
+                                    {
+                                        <option value="@td.ID_HOSPITAL" data-municipio="@td.FK_ID_MUNICIPIO">@td.NOMBRE_HOSPITAL</option>
+                                    }
+                                    
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="" class="form-label">Estado</label>
+                                <select class="form-select" aria-label="Default select example" id="estadoEdi" required name="ESTADO_CASOREPORTADO">
+                                    
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3 ms-2 me-2">
+                            <label for="" class="form-label">Descripcion</label>
+                            <textarea class="form-control" aria-label="Default select example" id="descriEdi" name="DESCRIPCION_CASOREPORTADO"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="editar" class="btn btn-success">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous">
+</script>
+<script>
+    $(document).ready(function() {
+        $('#filtro').on('input', function () {
+            var filtro = $(this).val();
+            console.log(filtro);
+            if (filtro.length >= 3) {
+                $.ajax({
+                    url: '@Url.Action("filtrarUsua", "Caso")',
+                    type: 'POST',
+                    data: { filtro: filtro },
+                    success: function(data) {
+                        console.log(data);
+                        $('#ta tbody').empty();
+                        data.forEach(function(user) {
+                            var row = `<tr>
+                                            <td class="text-center">${user.nombrE_USUARIO}</td>
+                                            <td class="text-center">${user.nombrE_TIPOSANGRE}</td>
+                                                <td class="text-center"><input type="checkbox" name="FK_ID_PACIENTE" value="${user.iD_USUARIO}"></td>
+                                        </tr>`;
+                            $('#ta tbody').append(row);
+                        });
+                    },
+                    error: function() {
+                        alert('Error al recuperar los datos.');
+                    }
+                });
+            }
+        });
+
+        $('#departa').on('input', function () {
+            var filtro = $(this).val();
+            console.log(filtro);
+            if (filtro != "Seleccione") {
+                $.ajax({
+                    url: '@Url.Action("filtromuni", "Caso")',
+                    type: 'POST',
+                    data: { filtro: filtro },
+                    success: function (data) {
+                        console.log(data);
+                        $('#muni').prop('disabled', false);
+                        $('#muni').empty();
+                        $('#muni').append(`<option>seleccione</option>`);
+
+                        data.forEach(function (mun) {
+                            $('#muni').append(`<option value="${mun.iD_MUNICIPIO}">${mun.nombrE_MUNICIPIO}</option>`);
+                        });
+                    },
+                    error: function () {
+                        alert('Error al recuperar los datos.');
+                    }
+                });
+            }
+        });
+
+        $('#muni').on('input', function () {
+            var filtro = $(this).val();
+            if (filtro != "Seleccione") {
+                $.ajax({
+                    url: '@Url.Action("filtrarHospital", "Caso")',
+                    type: 'POST',
+                    data: { filtro: filtro },
+                    success: function (data) {
+                        console.log(data);
+                        $('#hospi').prop('disabled', false);
+
+                        data.forEach(function (mun) {
+                            $('#hospi').append(`<option value="${mun.iD_HOSPITAL}">${mun.nombrE_HOSPITAL}</option>`);
+                        });
+                    },
+                    error: function () {
+                        alert('Error al recuperar los datos.');
+                    }
+                });
+            }
+        });
+
+        $('#edit').click(function () {
+            var id = $(this).val();
+            $.ajax({
+                url: '@Url.Action("editar", "Caso")',
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+
+                    console.log(data);
+
+                    $('#nombre').text(data.nombrE_PACIENTE);
+                    $('#tipodenEdi').val(data.fK_ID_TIPODENGUE);
+                    $('#departaEdi').val(data.iD_DEPARTAMENTO);
+                    $('#muniEdi').val(data.iD_MUNICIPIO);
+                    $('#hospiEdi').val(data.fK_ID_HOSPITAL);
+                    $('#idedit').val(data.iD_CASOREPORTADO);
+
+                    var row = `<option value="-1">
+                                    seleccione
+                                </option>
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option> `;
+                    $('#estadoEdi').append(row);
+                    if (data.estadO_CASOREPORTADO == 1) {
+                        $('#estadoEdi').val(1);
+                    }
+                    else
+                    {
+                        $('#estadoEdi').val(0);
+                    }
+
+                    $('#descriEdi').val(data.descripcioN_CASOREPORTADO);
+
+                },
+                error: function () {
+                    alert('Error al recuperar los datos.');
+                }
+            });
+        });
+
+        
+        var selectDepartamento = document.getElementById('departaEdi');
+        var selectMunicipio = document.getElementById('muniEdi');
+        var selectHospital = document.getElementById('hospiEdi');
+
+        selectDepartamento.addEventListener('change', function () {
+            var departamentoId = this.value;
+            selectMunicipio.disabled = false;
+            selectMunicipio.value = ''; // Resetea el municipio seleccionado
+            Array.from(selectMunicipio.options).forEach(function (option) {
+                if (option.dataset.departamento === departamentoId || option.value === '') {
+                    option.style.display = 'block'; // Mostrar la opción válida
+                } else {
+                    option.style.display = 'none'; // Ocultar la opción no válida
+                }
+            });
+            selectMunicipio.selectedIndex = 0; // Asegura que se muestra 'Seleccione'
+            selectHospital.disabled = true;
+            selectHospital.value = '';
+            Array.from(selectHospital.options).forEach(function (option) {
+                option.style.display = 'none'; // Ocultar todas las opciones
+            });
+            selectHospital.selectedIndex = 0; // Asegura que se muestra 'Seleccione'
+        });
+
+        selectMunicipio.addEventListener('change', function () {
+            var municipioId = this.value;
+            selectHospital.disabled = false;
+            selectHospital.value = ''; // Resetea el hospital seleccionado
+            Array.from(selectHospital.options).forEach(function (option) {
+                if (option.dataset.municipio === municipioId || option.value === '') {
+                    option.style.display = 'block'; // Mostrar la opción válida
+                } else {
+                    option.style.display = 'none'; // Ocultar la opción no válida
+                }
+            });
+            selectHospital.selectedIndex = 0; // Asegura que se muestra 'Seleccione'
+        });
+
+    });
+</script>
