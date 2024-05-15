@@ -9,6 +9,9 @@
         public string LATITUD_HOSPITAL { get; set; }
         public string LONGITUD_HOSPITAL { get; set; }
         public int FK_ID_MUNICIPIO { get; set; }
+        public string IMAGEN_HOSPITAL { get; set; }
+        public IFormFile? File { get; set; }
+        public ImagenModel Imagen { get; set; }
 
     }
 }

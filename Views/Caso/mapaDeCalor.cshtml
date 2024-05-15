@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/lib/leaflet/leaflet.css" rel="stylesheet" />
+<link href="~/lib/leaflet/leaflet.min.css" rel="stylesheet" />
+
+
+
+
+<script src="~/lib/leaflet/leaflet-src.js"></script>
+<script src="~/lib/leaflet/leaflet-src.min.js"></script>
+
+<button id="locate-me" class="btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
+        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+    </svg>
+</button>
+<div class="m-1">
+    <div id="map" style="width:100%; height:600px;">
+    </div>
+</div>
+
+
+<script>
+    var map = L.map('map').setView([4.379, -73.433], 5);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+</script>
+
+<script>
+    document.getElementById('locate-me').addEventListener('click', function () {
+        map.locate({ setView: true, maxZoom: 15 });
+    });
+
+    map.on('locationfound', function (e) {
+        var radius = e.accuracy ;
+        L.marker(e.latlng).addTo(map)
+            .bindPopup("Estás dentro de " + radius + " metros de este punto").openPopup();
+        L.circle(e.latlng, radius).addTo(map);
+    });
+
+    map.on('locationerror', function (e) {
+        alert("Error al obtener la ubicación: " + e.message);
+    });
+</script>

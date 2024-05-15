@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using WebCSI.Data;
 using WebCSI.Models;
 
 namespace WebCSI.Controllers
 {
+    [Authorize]
+
     public class UsuarioController : Controller
     {
         Conexion cn = new Conexion();
@@ -25,7 +28,12 @@ namespace WebCSI.Controllers
             DataTable generos = cn.ProcedimientosSelect(null, "ListarGenero", null);
             List<GeneroModel> generosList = generos.DataTableToList<GeneroModel>();
 
+            DataTable muni = cn.ProcedimientosSelect(null, "ListarMuni",null);
+            List<MunicipioModel> lmuni = muni.DataTableToList<MunicipioModel>();
 
+
+
+            ViewBag.muni = lmuni;
             ViewBag.Departamentos = departamentosList;
             ViewBag.Roles = rolesList;
             ViewBag.TiposSangre = tiposSangreList;
@@ -46,11 +54,42 @@ namespace WebCSI.Controllers
         [HttpPost]
         public IActionResult crarUsuario(UsuarioModel a)
         {
-            string[] parametros = { "nomu", "correou", "diru", "rolu", "muniu", "tiposangreu"  };
-            string[] valores = { a.NOMBRE_USUARIO, a.CORREO_USUARIO, a.DIRECCION_USUARIO, a.FK_ID_ROL+"", a.FK_ID_MUNICIPIO.ToString(), a.FK_ID_TIPOSANGRE.ToString() };
-            cn.procedimientosInEd(parametros, "InsertarUsuario", valores);
+            string[] parametros = { "nomu", "correou", "diru", "rolu", "muniu", "tiposangreu" ,"genu" };
+            string[] valores = { a.NOMBRE_USUARIO, a.CORREO_USUARIO, a.DIRECCION_USUARIO, a.FK_ID_ROL+"", a.FK_ID_MUNICIPIO.ToString(), a.FK_ID_TIPOSANGRE.ToString(),a.FK_ID_GENERO+""};
+            cn.procedimientosInEd(parametros, "CrearUsuario", valores);
 
             return RedirectToAction("Index", "Usuario");
         }
+
+        public IActionResult HistorialCasos(int id)
+        {
+            string[] parametros = { "idp" };
+            string[] valores = { id.ToString() };
+            DataTable casos = cn.ProcedimientosSelect(parametros, "HistorialCasos", valores);
+            List<CasoModel> casosList = casos.DataTableToList<CasoModel>();
+
+            return View(casosList);
+        }
+
+        [HttpPost]
+        public IActionResult ObtenerUSua(int id)
+        {
+            string[] aux = { id.ToString() };
+            string[] parametros = { "idu" };
+            DataTable dt = cn.ProcedimientosSelect(parametros, "ObtenerUsuario", aux);
+            List<UsuarioModel> usuario = dt.DataTableToList<UsuarioModel>();
+            return Json(usuario[0]);
+        }
+
+        [HttpPost]
+        public IActionResult EditarUsuario(UsuarioModel a)
+        {
+            string[] parametros = { "idu", "nombre", "correo", "dire", "rolu", "muni", "gene" };
+            string[] valores = { a.ID_USUARIO.ToString(), a.NOMBRE_USUARIO, a.CORREO_USUARIO, a.DIRECCION_USUARIO, a.FK_ID_ROL + "", a.FK_ID_MUNICIPIO.ToString(), a.FK_ID_GENERO + "" };
+            cn.procedimientosInEd(parametros, "EditarUsuario", valores);
+
+            return RedirectToAction("Index", "Usuario");
+        }   
+
     }
 }

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using WebCSI.Models;
 using WebCSI.Data;
 using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebCSI.Controllers
 {
@@ -12,10 +13,14 @@ namespace WebCSI.Controllers
     {
         Conexion cn = new Conexion();
 
-        public IActionResult Login()
-        {
-            return View();
-        }
+            public IActionResult Login()
+            {
+                if(User.Identity.IsAuthenticated)
+                {
+                    return RedirectToAction("Index", "Usuario");
+                }   
+                return View();
+            }
 
         public IActionResult Recuperar()
         {

@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@a.NOMBRE_PACIENTE</h5>
                             <p class="card-text">@a.DESCRIPCION_CASOREPORTADO</p>
-                            <button type="button" class="btn btn-outline-primary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#editarcaso" value="@a.ID_CASOREPORTADO" id="edit">
+                            <button type="button" class="btn btn-outline-primary mt-3 mb-3 edit" data-bs-toggle="modal" data-bs-target="#editarcaso" value="@a.ID_CASOREPORTADO" id="edit">
                                 Editar
                             </button>
                         </div>
@@ -308,7 +308,7 @@
             }
         });
 
-        $('#edit').click(function () {
+        $('.edit').click(function () {
             var id = $(this).val();
             $.ajax({
                 url: '@Url.Action("editar", "Caso")',

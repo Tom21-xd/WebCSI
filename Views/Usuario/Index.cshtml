@@ -30,22 +30,22 @@
                                 <td class="text-center">@u.NOMBRE_ROL</td>
                                 <td class="text-center">@u.NOMBRE_MUNICIPIO</td>
                                 <td class="text-center">@u.DIRECCION_USUARIO</td>
-                                                                <td class="text-center">@u.NOMBRE_TIPOSANGRE</td>
+                                <td class="text-center">@u.NOMBRE_TIPOSANGRE</td>
 
                                 <td class="text-center">
-                                    <button type="button" id="" class="btn btn-outline-warning mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#editarUsuario" value="">
+                                    <button type="button" id="Beditat" class="btn btn-outline-warning mt-3 mb-3 Beditat" data-bs-toggle="modal" data-bs-target="#editarUsuario" value="@u.ID_USUARIO" >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                           <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                           <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                         </svg>
                                     </button>
-                                    <button type="button" id="" class="btn btn-outline-light mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#editarUsuario" value="">
+                                    <a id="" class="btn btn-outline-light mt-3 mb-3" href="@Url.Action("HistorialCasos","Usuario",new{id = @u.ID_USUARIO})">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
-  <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
-  <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
-  <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
-</svg>
-                                    </button>
+                                            <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
+                                            <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
+                                            <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
+                                        </svg>
+                                    </a>
                                 </td>
                             </tr>
                         }
@@ -72,40 +72,50 @@
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <form id="edit"  method="post">
+                        <form id="edit" method="post" asp-action="EditarUsuario" asp-controller="Usuario">
                             <div class="row">
+                                <input type="text" id="id" name="ID_USUARIO" hidden>
                                 <div class="col">
                                     <label for="" class="form-label ">Departamento</label>
-                                    <select class="form-select" aria-label="Default select example" id="" name="" required>
-                                        
+                                    <select class="form-select departa" aria-label="Default select example" id="departaedi" name="" required>
+                                        @foreach(DepartamentoModel d in ViewBag.Departamentos)
+                                        {
+                                            <option value="@d.ID_DEPARTAMENTO">@d.NOMBRE_DEPARTAMENTO</option>
+                                        }
                                     </select>
                                 </div>
                                 <div class="col">
                                     <label for="" class="form-label ">Municipios</label>
-                                    <select class="form-select" aria-label="Default select example" id="" name="" required>
-                                        
+                                    <select class="form-select" aria-label="Default select example" id="muniedi" name="FK_ID_MUNICIPIO" required>
+                                        @foreach(MunicipioModel m in ViewBag.muni)
+                                        {
+                                            <option value="@m.ID_MUNICIPIO" data-departamento="@m.FK_ID_DEPARTAMENTO" >@m.NOMBRE_MUNICIPIO</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
                             <div class="row mt-5">
                                 <div class="col">
                                     <label for="" class="form-label">Nombre de usuario</label>
-                                    <input type="text" class="form-control" id="" name="" required>
+                                    <input type="text" class="form-control" id="nombreedi" name="NOMBRE_USUARIO" required>
                                 </div>
                                 <div class="col">
                                     <label for="" class="form-label">Correo</label>
-                                    <input type="text" class="form-control" id="" name="">
+                                    <input type="text" class="form-control" id="correoedi" name="CORREO_USUARIO">
                                 </div>
                             </div>
                             <div class="row  mt-5">
                                 <div class="col">
                                     <label for="" class="form-label">Direccion</label>
-                                    <input type="text" class="form-control" id="apellido1" name="" required>
+                                    <input type="text" class="form-control" id="direccionedi" name="DIRECCION_USUARIO" required>
                                 </div>
                                 <div class="col">
                                     <label for="" class="form-label ">Genero</label>
-                                    <select class="form-select" aria-label="Default select example" id="" name="" required>
-                                        
+                                    <select class="form-select" aria-label="Default select example" id="generoedit" name="FK_ID_GENERO" required>
+                                        @foreach(GeneroModel g in ViewBag.Generos)
+                                        {
+                                            <option value="@g.ID_GENERO" >@g.NOMBRE_GENERO</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -113,8 +123,11 @@
                                 
                                 <div class="col">
                                     <label for="" class="form-label ">Rol</label>
-                                    <select class="form-select" aria-label="Default select example" id="" name="" required>
-                                        
+                                    <select class="form-select" aria-label="Default select example" id="roledit" name="FK_ID_ROL" required>
+                                        @foreach(RolModel r in ViewBag.Roles)
+                                        {
+                                            <option value="@r.ID_ROL" >@r.NOMBRE_ROL</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -140,12 +153,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <div class="container">
+                    <div class="container">
                         <form id="crear" action="@Url.Action("crarUsuario","Usuario")" method="post">
                             <div class="row">
                                 <div class="col">
                                     <label for="" class="form-label ">Departamento</label>
-                                    <select class="form-select" aria-label="Default select example" id="departa" name="" required>
+                                    <select class="form-select departa" aria-label="Default select example" id="departa" name="" required>
                                         @foreach(DepartamentoModel d in ViewBag.Departamentos)
                                         {
                                             <option value="@d.ID_DEPARTAMENTO">@d.NOMBRE_DEPARTAMENTO</option>
@@ -197,7 +210,7 @@
                                 </div>
                                 <div class="col">
                                     <label for="" class="form-label ">Tipo de sangre</label>
-                                    <select class="form-select" aria-label="Default select example" id="" name="" required>
+                                    <select class="form-select" aria-label="Default select example" id="" name="FK_ID_TIPOSANGRE" required>
                                         @foreach(TipoSangreModel t in ViewBag.TiposSangre)
                                         {
                                             <option value="@t.ID_TIPOSANGRE">@t.NOMBRE_TIPOSANGRE</option>
@@ -205,7 +218,6 @@
                                     </select>
                                 </div>
                             </div>
-
                         </form>
                     </div>
 
@@ -231,29 +243,67 @@
     <script>
         $(document).ready(function () {
             $('#departa').on('input', function () {
-            var filtro = $(this).val();
-            console.log(filtro);
-            if (filtro != "Seleccione") {
-                $.ajax({
-                    url: '@Url.Action("filtrodeparta", "Usuario")',
-                    type: 'POST',
-                    data: { filtro: filtro },
-                    success: function (data) {
-                        console.log(data);
-                        $('#muni').prop('disabled', false);
-                        $('#muni').empty();
-                        $('#muni').append(`<option>seleccione</option>`);
+                var filtro = $(this).val();
+                console.log(filtro);
+                if (filtro != "Seleccione") {
+                    $.ajax({
+                        url: '@Url.Action("filtrodeparta", "Usuario")',
+                        type: 'POST',
+                        data: { filtro: filtro },
+                        success: function (data) {
+                            console.log(data);
+                            $('#muni').prop('disabled', false);
+                            $('#muni').empty();
+                            $('#muni').append(`<option>seleccione</option>`);
 
-                        data.forEach(function (mun) {
-                            $('#muni').append(`<option value="${mun.iD_MUNICIPIO}">${mun.nombrE_MUNICIPIO}</option>`);
-                        });
+                            data.forEach(function (mun) {
+                                $('#muni').append(`<option value="${mun.iD_MUNICIPIO}">${mun.nombrE_MUNICIPIO}</option>`);
+                            });
+                        },
+                        error: function () {
+                            alert('Error al recuperar los datos.');
+                        }
+                    });
+                }
+            });
+
+            var municipios = $('#muniedi option').clone();
+
+            $('#departaedi').on('change', function() {
+                $('#muniedi').prop('disabled', false);
+                var selectedDepartamento = $(this).val();
+                var filteredMunicipios = municipios.filter(function() {
+                    return $(this).data('departamento') == selectedDepartamento;
+                });
+
+                $('#muniedi').empty().append(filteredMunicipios);
+            });
+
+            $('.Beditat').click(function () {
+                var id = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("ObtenerUSua", "Usuario")',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (data) {
+
+                        $('#id').val(data.iD_USUARIO);
+                        $('#departaedi').val(data.iD_DEPARTAMENTO);
+                        $('#muniedi').val(data.fK_ID_MUNICIPIO);
+                        $('#nombreedi').val(data.nombrE_USUARIO);
+                        $('#correoedi').val(data.correO_USUARIO);
+                        $('#direccionedi').val(data.direccioN_USUARIO);
+                        $('#generoedit').val(data.fK_ID_GENERO);
+                        $('#roledit').val(data.fK_ID_ROL);
+
+                        console.log(data);
                     },
                     error: function () {
                         alert('Error al recuperar los datos.');
                     }
                 });
-            }
-        });
+            });
+
         });
     </script>
 

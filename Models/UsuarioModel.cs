@@ -15,5 +15,8 @@
         public string NOMBRE_TIPOSANGRE { get; set; }
         public int FK_ID_GENERO { get; set; }
         public string NOMBRE_GENERO { get; set; }
+
+        public int ID_DEPARTAMENTO { get; set; }
+        
     }
 }

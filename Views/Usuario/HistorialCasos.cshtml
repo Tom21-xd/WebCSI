@@ -1,0 +1,56 @@
+﻿@model List<CasoModel>
+@{
+    ViewData["Title"] = "HistorialCasos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container mt-5">
+    <h1 class="mb-3">Historial casos</h1>
+    <div class="table-responsive">
+        <div>
+            <table id="ta" class="table-bordered align-middle border-warning mt-3">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width: 10%;">Identificador</th>
+                        <th class="text-center" style="width: 10%;">Nombre</th>
+                        <th class="text-center " style="width: 10%;">Fecha Inicio</th>
+                        <th class="text-center " style="width: 10%;">Fecha Finalizacion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">No hay casos reportados</td>
+                        </tr>
+                    }else{
+                        @foreach (CasoModel c in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@c.ID_CASOREPORTADO</td>
+                                <td class="text-center">@c.NOMBRE_PACIENTE</td>
+                                <td class="text-center">@c.FECHA_CASOREPORTADO.Substring(0, 10)</td>
+                                <td class="text-center">
+                                    @if (c.FECHAFINALIZACION_CASO == "")
+                                    {
+                                        @:En curso
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(c.FECHAFINALIZACION_CASO.Substring(0,10))
+                                    }
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="d-flex justify-content-between align-items-center  mt-3">
+        <a type="button" id="" class="btn btn-outline-warning mt-3 mb-3" value="" asp-action="Index" asp-controller="Usuario">
+            Volver
+        </a>
+    </div>
+</div>

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using WebCSI.Data;
 using WebCSI.Models;
 
 namespace WebCSI.Controllers
 {
+    [Authorize]
+
     public class CasoController : Controller
     {
         Conexion cn = new Conexion();
@@ -93,6 +96,11 @@ namespace WebCSI.Controllers
             string[] datos = { a.ID_CASOREPORTADO+"", a.DESCRIPCION_CASOREPORTADO, a.ESTADO_CASOREPORTADO+"",a.FK_ID_HOSPITAL+"", a.FK_ID_TIPODENGUE+""};
             cn.procedimientosInEd(parametros, "ActualizarCaso", datos);
             return RedirectToAction("Index", "Caso");
+        }
+
+        public IActionResult mapaDeCalor()
+        {
+            return View();
         }
 
     }

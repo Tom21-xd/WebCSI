@@ -1,4 +1,4 @@
-﻿
+﻿@model List<HospitalModel>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -20,20 +20,23 @@
         
     </div>
     <div class="row row-cols-auto " style="justify-content:center;">
-        <div class="col mt-5">
-            <div class="card" style="width: 20rem;">
-                <img src="~/img/mariaInmaculada.jpg" class="card-img-top" style="height:30rem; object-fit: contain;">
-                <div class="card-body">
-                    <h5 class="card-title">Hospital Maria Inmaculada</h5>
-                    <p class="card-text">Direccion : -------</p>
-                </div>
-                <div class="card-footer">
-                    <a href="" class="btn btn-outline-success">Editar</a>
-                    <a href="" class="btn btn-outline-success">mas informacion</a>
+        
+        @foreach (HospitalModel h in Model)
+        {
+            <div class="col mt-5">
+                <div class="card" style="width: 20rem;">
+                    <img src="data:image/jpg; base64, @h.Imagen.Imagen" class="card-img-top" style="height:15rem; object-fit: contain;">
+                    <div class="card-body">
+                        <h5 class="card-title">@h.NOMBRE_HOSPITAL</h5>
+                        <p class="card-text">Direccion : @h.DIRECCION_HOSPITAL</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="" class="btn btn-outline-success">Editar</a>
+                        <a href="" class="btn btn-outline-success">mas informacion</a>
+                    </div>
                 </div>
             </div>
-        </div>
-       
+        }
 
     </div>
    
