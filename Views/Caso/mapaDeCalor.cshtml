@@ -1,15 +1,10 @@
-﻿@{
+﻿@model List<HospitalModel>
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link href="~/lib/leaflet/leaflet.css" rel="stylesheet" />
-<link href="~/lib/leaflet/leaflet.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
-
-
-
-<script src="~/lib/leaflet/leaflet-src.js"></script>
-<script src="~/lib/leaflet/leaflet-src.min.js"></script>
 
 <button id="locate-me" class="btn">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
@@ -21,8 +16,9 @@
     <div id="map" style="width:100%; height:600px;">
     </div>
 </div>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-
+<script src="~/js/leaflet-heat.js"></script>
 <script>
     var map = L.map('map').setView([4.379, -73.433], 5);
 
@@ -30,8 +26,27 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-</script>
 
+    @foreach (var hospital in Model)
+    {
+        <text>
+            L.marker([@hospital.LATITUD_HOSPITAL, @hospital.LONGITUD_HOSPITAL]).addTo(map)
+                .bindPopup('@hospital.NOMBRE_HOSPITAL Cuenta con @hospital.CANTIDADCASOS_HOSPITAL casos');
+        </text>
+
+    }
+    var heatData = [];
+
+    var casos = @Html.Raw(Json.Serialize(ViewBag.lista));
+    for (let i = 0; i < casos.length; i++) {
+        var aux = casos[i].direccioN_CASOREPORTADO+"";
+        var aux1 = aux.split(":");
+        heatData.push([aux1[0], aux1[1], 2]);
+    }
+    L.heatLayer(heatData).addTo(map);
+
+
+</script>
 <script>
     document.getElementById('locate-me').addEventListener('click', function () {
         map.locate({ setView: true, maxZoom: 15 });

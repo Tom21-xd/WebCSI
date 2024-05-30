@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using WebCSI.Models;
 
 
@@ -8,7 +9,7 @@ namespace WebReservas.Data
     public class ConexionMongo
     {
         private IMongoDatabase cnm;
-
+        private GridFSBucket gridFSBucket;
 
         public ConexionMongo()
         {
@@ -43,6 +44,15 @@ namespace WebReservas.Data
             var filtro = Builders<ImagenModel>.Filter.Eq("Id", id);
             var update = Builders<ImagenModel>.Update.Set("Imagen", img.Imagen);
             imageCollection.UpdateOne(filtro,update);
+        }
+
+        public async Task<string> UploadPdfAsync(IFormFile file)
+        {
+            using (var stream = file.OpenReadStream())
+            {
+                var fileId = await gridFSBucket.UploadFromStreamAsync(file.FileName, stream);
+                return fileId.ToString();
+            }
         }
 
     }

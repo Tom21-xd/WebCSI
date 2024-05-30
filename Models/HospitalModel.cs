@@ -12,6 +12,9 @@
         public string IMAGEN_HOSPITAL { get; set; }
         public IFormFile? File { get; set; }
         public ImagenModel Imagen { get; set; }
+        public int CANTIDADCASOS_HOSPITAL { get; set; }
+        public int ID_DEPARTAMENTO { get; set; }
+
 
     }
 }

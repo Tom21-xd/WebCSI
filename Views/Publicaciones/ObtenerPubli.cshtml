@@ -1,0 +1,68 @@
+﻿@model PublicacionModel
+@{
+    ViewData["Title"] = "ObtenerPubli";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container text-center mt-5">
+    <h1 class="">Informacion Detallada</h1>
+    <div class="mt-5 text-center">
+        <div class="row mt-4 justify-content-center">
+            <h3 class="mt-3">@Model.TITULO_PUBLICACION</h3>
+        </div>
+        <div class="row mt-4 justify-content-center">
+            <div class="col-auto">
+                <img src="data:image/jpg; base64, @Model.Imagen.Imagen" style="height:50rem; object-fit: contain; width:50rem;">
+                <p>Fecha de publicacion: @Model.FECHA_PUBLICACION.Substring(0,10)</p>
+            </div>
+        </div>
+        <div class="row mt-4 justify-content-center">
+            <h3 class="mt-3 mb-4">Descripcion</h3>
+            <div class="col-6" style="border-radius:20px; border: 2px solid black;">
+                <p class="mt-3">@Model.DESCRIPCION_PUBLICACION</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mb-4">
+    <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#editarpubli">Editar</button>
+</div>
+
+<div class="modal fade" id="editarpubli" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="crearcasolabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content bg">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5 text-center" id="staticBackdropLabel">
+                    Nueva Publicacion
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="Editarpubli" method="post" action="@Url.Action("EditarPubli","Publicaciones")" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col">
+                                <label for="" class="form-label">Titulo de la publicacion</label>
+                                <input class="form-control" required name="TITULO_PUBLICACION" id="titulo" value="@Model.TITULO_PUBLICACION">
+                            </div>
+                            <input name="IMAGEN_PUBLICACION" value="@Model.IMAGEN_PUBLICACION" hidden>
+                            <input name="ID_PUBLICACION" value="@Model.ID_PUBLICACION" hidden>
+                            <div class="col">
+                                <label for="" class="form-label">Imagen </label>
+                                <input type="file" class="form-control" accept="image/*" id="imagen" name="File">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label for="" class="form-label">Contenido de la publicacion</label>
+                            <textarea class="form-control" name="DESCRIPCION_PUBLICACION" id="descripcion">@Model.DESCRIPCION_PUBLICACION</textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="Editarpubli" class="btn btn-success">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

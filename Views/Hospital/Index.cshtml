@@ -9,17 +9,18 @@
     <div class="d-flex justify-content: flex-start">
         <div class="col">
             <label for="" class="form-label">Filtrar por :</label>
-            <input class="form-control" type="text" placeholder="Buscar"></input>
+            <input class="form-control" type="text" placeholder="Buscar" id="filtro" name="filtro">
 
         </div>
-        <div class="col ms-5">
+        <button class="btn btn-outline-success ms-3" id="buscar">Buscar</button>
+@*         <div class="col ms-5">
             <label for="" class="form-label">Departamento</label>
             <select class="form-select">
             </select>
         </div>
-        
+         *@
     </div>
-    <div class="row row-cols-auto " style="justify-content:center;">
+    <div class="row row-cols-auto " style="justify-content:center;" id="contenedor">
         
         @foreach (HospitalModel h in Model)
         {
@@ -31,14 +32,256 @@
                         <p class="card-text">Direccion : @h.DIRECCION_HOSPITAL</p>
                     </div>
                     <div class="card-footer">
-                        <a href="" class="btn btn-outline-success">Editar</a>
-                        <a href="" class="btn btn-outline-success">mas informacion</a>
+                        <button type="button" id="editarh" class="btn btn-outline-warning mt-3 mb-3 editarh" data-bs-toggle="modal" data-bs-target="#editarHospital" value="@h.ID_HOSPITAL">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                            </svg> Editar
+                        </button>
+                        <a id="" class="btn btn-outline-light ms-3" href="@Url.Action("masInfo","Hospital",new{idh = @h.ID_HOSPITAL})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-lg" viewBox="0 0 16 16">
+                                <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0" />
+                            </svg> Mas informacion
+                        </a>
                     </div>
                 </div>
             </div>
         }
 
     </div>
-   
+
+    <button type="button" id="" class="btn btn-outline-secondary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#agregarhospital" value="">
+        Agregar hospital
+    </button>
 
 </div>
+
+<div class="modal fade" id="editarHospital" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editarUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg modal-dialog-scrollable">
+        <div class="modal-content bg">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5 text-center" id="staticBackdropLabel">
+                    Editar Hospital
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="edit" method="post" asp-action="EditarHospital" asp-controller="Hospital" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col">
+                                <label for="" class="form-label ">Departamento</label>
+                                <select class="form-select departa" aria-label="Default select example" id="departa" name="" disabled>
+                                    @foreach (DepartamentoModel d in ViewBag.Departamentos)
+                                    {
+                                        <option value="@d.ID_DEPARTAMENTO">@d.NOMBRE_DEPARTAMENTO</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="" class="form-label ">Municipios</label>
+                                <select class="form-select" aria-label="Default select example" id="muni" name="FK_ID_MUNICIPIO" disabled>
+                                    @foreach (MunicipioModel m in ViewBag.muni)
+                                    {
+                                        <option value="@m.ID_MUNICIPIO" data-departamento="@m.FK_ID_DEPARTAMENTO">@m.NOMBRE_MUNICIPIO</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="" class="form-label ">Nombre</label>
+                                <input class="form-control" name="NOMBRE_HOSPITAL" type="text" id="nomH">
+                            </div>
+                            <div class="col">
+                                <label for="" class="form-label ">Direccion</label>
+                                <input class="form-control" name="DIRECCION_HOSPITAL" type="text" readonly id="dir">
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" id="imag" name="IMAGEN_HOSPITAL" hidden>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="" class="form-label ">Imagen</label>
+                                <input type="file" class="form-control" accept="image/*" id="imagen" name="File">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="edit" class="btn btn-success">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="agregarhospital" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="crearhos" aria-hidden="true">
+    <div class="modal-dialog  modal-lg modal-dialog-scrollable">
+        <div class="modal-content bg">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5 text-center" id="staticBackdropLabel">
+                    Agregar Hospital
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="crearhospi" method="post" action="@Url.Action("crarHospital","Hospital")" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col">
+                                <label for="" class="form-label ">Departamento</label>
+                                <select class="form-select departa" aria-label="Default select example" id="departa" name="" required>
+                                    @foreach (DepartamentoModel d in ViewBag.Departamentos)
+                                    {
+                                        <option value="@d.ID_DEPARTAMENTO">@d.NOMBRE_DEPARTAMENTO</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="" class="form-label ">Municipios</label>
+                                <select class="form-select" aria-label="Default select example" id="muni" name="FK_ID_MUNICIPIO" required>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="" class="form-label ">Nombre</label>
+                                <input class="form-control" name="NOMBRE_HOSPITAL" type="text">
+                            </div>
+                            <div class="col">
+                                <label for="" class="form-label ">Direccion</label>
+                                <input class="form-control" name="DIRECCION_HOSPITAL" type="text">
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <label for="" class="form-label ">Ubicacion</label>
+                                        <input class="form-control" name="ubi" type="text" readonly id="coordenadas">
+                                    </div>
+                                    <div class="col-2 align-content-center">
+                                        <button type="button" class="btn btn-outline-success" onclick="openMapPopup()">Seleccionar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="" class="form-label ">Imagen</label>
+                                <input type= "file" class="form-control" accept="image/*" id="imagen" name="File">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="crearhospi" class="btn btn-success">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous">
+</script>
+<script>
+
+    var container = document.getElementById("contenedor");
+
+    $(document).ready(function () {
+        $('#departa').on('input', function () {
+            var filtro = $(this).val();
+            console.log(filtro);
+            if (filtro != "Seleccione") {
+                $.ajax({
+                    url: '@Url.Action("filtrodeparta", "Hospital")',
+                    type: 'POST',
+                    data: { filtro: filtro },
+                    success: function (data) {
+                        console.log(data);
+                        $('#muni').prop('disabled', false);
+                        $('#muni').empty();
+                        $('#muni').append(`<option>seleccione</option>`);
+
+                        data.forEach(function (mun) {
+                            $('#muni').append(`<option value="${mun.iD_MUNICIPIO}">${mun.nombrE_MUNICIPIO}</option>`);
+                        });
+                    },
+                    error: function () {
+                        alert('Error al recuperar los datos.');
+                    }
+                });
+            }
+        });
+
+        $("#buscar").on("click", function () {
+            var filtro = $('#filtro').val();
+            $.ajax({
+                url: '@Url.Action("filtraHospi", "Hospital")',
+                type: 'POST',
+                data: { filtro: filtro },
+                success: function (data) {
+                    console.log(data);
+                    container.innerHTML = "";
+
+                    data.forEach(function (hospital) {
+                        var card = document.createElement("div");
+                        card.className = "col mt-5"; // Agregar clases aquí
+                        card.style.width = "20rem";
+                        card.innerHTML = `
+                <div class="card">
+                    <img src="data:image/jpg;base64,${hospital.imagen.imagen}" class="card-img-top" style="height:15rem; object-fit: contain;">
+                    <div class="card-body">
+                            <h5 class="card-title">${hospital.nombrE_HOSPITAL}</h5>
+                            <p class="card-text">Direccion : ${hospital.direccioN_HOSPITAL}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="" class="btn btn-outline-success">Editar</a>
+                        <a href="" class="btn btn-outline-success">mas informacion</a>
+                    </div>
+                </div>`;
+                        container.appendChild(card);
+                    });
+                },
+                error: function () {
+                    alert('Error al recuperar los datos.');
+                }
+            });
+        });
+
+        $('.editarh').on("click", function () {
+            var id = $(this).val();
+            $.ajax({
+                url: '@Url.Action("ObtenerHospital", "Hospital")',
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+                    console.log(data);
+                    $('#departa').val(data.iD_DEPARTAMENTO);
+                    $('#muni').val(data.fK_ID_MUNICIPIO);
+                    $('#nomH').val(data.nombrE_HOSPITAL);
+                    $('#dir').val(data.direccioN_HOSPITAL);
+                    $('#imag').val(data.imageN_HOSPITAL);
+
+                },
+                error: function () {
+                    alert('Error al recuperar los datos.');
+                }
+            });
+        });
+
+    });
+
+    function openMapPopup() {
+        var popup = window.open("@Url.Action("mapPopup", "Caso")", "MapPopup", "width=600,height=400");
+    }
+</script>

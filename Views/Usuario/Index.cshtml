@@ -12,26 +12,27 @@
             <div> 
                 <table id="ta" class="table-bordered align-middle border-primary mt-3">
                     <thead>
-                        <th class="text-center" style="width: 10%;">Identificador</th>
-                    <th class="text-center" style="width: 10%;">Nombre</th>
-                    <th class="text-center " style="width: 10%;">Correo</th>
-                    <th class="text-center " style="width: 10%;">Rol</th>
-                    <th class="text-center " style="width: 10%;">Municipio</th>
-                    <th class="text-center " style="width: 10%;">Direccion</th>
-                                        <th class="text-center " style="width: 10%;">Tipo de sangre</th>
-                    <th class="text-center " style="width: 10%;">Edit</th>
+                        <tr>
+                            <th class="text-center" style="width: 10%;">Nombre</th>
+                            <th class="text-center" style="width: 10%;">Correo</th>
+                            <th class="text-center " style="width: 10%;">Rol</th>
+                            <th class="text-center " style="width: 10%;">Municipio</th>
+                            <th class="text-center " style="width: 10%;">Direccion</th>
+                            <th class="text-center " style="width: 10%;">Tipo de sangre</th>
+                            <th class="text-center " style="width: 10%;">Estado</th>
+                            <th class="text-center " style="width: 10%;">Edit</th>
+                        </tr>
                     </thead>
                     <tbody>
                         @foreach(UsuarioModel u in Model){
                             <tr>
-                                <td class="text-center">@u.ID_USUARIO</td>
                                 <td class="text-center">@u.NOMBRE_USUARIO</td>
                                 <td class="text-center">@u.CORREO_USUARIO</td>
                                 <td class="text-center">@u.NOMBRE_ROL</td>
                                 <td class="text-center">@u.NOMBRE_MUNICIPIO</td>
                                 <td class="text-center">@u.DIRECCION_USUARIO</td>
                                 <td class="text-center">@u.NOMBRE_TIPOSANGRE</td>
-
+                                <td class="text-center">@u.NOMBRE_ESTADOUSUARIO</td>
                                 <td class="text-center">
                                     <button type="button" id="Beditat" class="btn btn-outline-warning mt-3 mb-3 Beditat" data-bs-toggle="modal" data-bs-target="#editarUsuario" value="@u.ID_USUARIO" >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -99,6 +100,7 @@
                                     <label for="" class="form-label">Nombre de usuario</label>
                                     <input type="text" class="form-control" id="nombreedi" name="NOMBRE_USUARIO" required>
                                 </div>
+
                                 <div class="col">
                                     <label for="" class="form-label">Correo</label>
                                     <input type="text" class="form-control" id="correoedi" name="CORREO_USUARIO">
@@ -170,7 +172,7 @@
                                     <select class="form-select" aria-label="Default select example" id="muni" name="FK_ID_MUNICIPIO" required>
                                         
                                     </select>
-                                </div
+                                </div>
                             </div>
                             <div class="row mt-5">
                                 <div class="col">

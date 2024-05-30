@@ -1,0 +1,54 @@
+﻿@model HospitalModel
+@{
+    ViewData["Title"] = "masInfo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container m-3 mt-4">
+    <h1>Informacion Detallada</h1>
+    <div class="row mt-5">
+        <div class="col">
+            <div class="row">
+                <img src="data:image/jpg; base64, @Model.Imagen.Imagen" class="card-img-top" style="height:25rem; object-fit: contain; width:25rem; ">
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h3 class="mt-3">Nombre: @Model.NOMBRE_HOSPITAL</h3>
+                    <h3 class="mt-3">Direccion: @Model.DIRECCION_HOSPITAL</h3>
+
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Id caso</th>
+                        <th scope="col">Nombre del paciente</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+<tbody>
+                    @if (ViewBag.Casos.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center">No hay casos reportados</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (CasoModel c in ViewBag.Casos)
+                        {
+                            <tr>
+                                <td>@c.ID_CASOREPORTADO</td>
+                                <td>@c.NOMBRE_PACIENTE</td>
+                                <td>@c.NOMBRE_ESTADOCASO</td>
+                            </tr>
+                        }
+                    }
+            </table>
+        </div>
+    </div>
+    
+</div>
+

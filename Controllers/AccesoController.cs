@@ -6,6 +6,7 @@ using WebCSI.Models;
 using WebCSI.Data;
 using System.Data;
 using Microsoft.AspNetCore.Authorization;
+using WebCSI.Helper;
 
 namespace WebCSI.Controllers
 {
@@ -13,7 +14,7 @@ namespace WebCSI.Controllers
     {
         Conexion cn = new Conexion();
 
-            public IActionResult Login()
+        public IActionResult Login()
             {
                 if(User.Identity.IsAuthenticated)
                 {
@@ -49,7 +50,7 @@ namespace WebCSI.Controllers
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
+                 
                 return RedirectToAction("Index", "Usuario");
             }
             else
@@ -63,6 +64,30 @@ namespace WebCSI.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Acceso");
+        }
+
+        [HttpPost]
+        public ActionResult RecuContra(string correo)
+        {
+            ServicioGmail aux = new ServicioGmail();
+            String nuevac = generarclave();
+            string[] datos = { correo, nuevac };
+            string[] parametros = { "correo", "contra" };
+            cn.procedimientosInEd(parametros, "RecuperarContra", datos);
+            aux.SendEmailGmail(correo, "Recuperacion De Contraseña", "Su nueva Contraseña es :" + nuevac);
+            return View("Login");
+        }
+
+        public String generarclave()
+        {
+            Random aleatorio = new Random();
+            string conjuntoCaracteres = "abcdefghijklmnopqrstuvwxyz0123456789";
+            string cadena = "";
+            for (int i = 0; i < 6; i++)
+            {
+                cadena += conjuntoCaracteres[aleatorio.Next(conjuntoCaracteres.Length)];
+            }
+            return cadena;
         }
     }
 }

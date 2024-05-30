@@ -1,0 +1,138 @@
+﻿ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<div class="container">
+    <div class="row  mt-3">
+        <div class="col">
+            <label for="" class="form-label">Zona</label>
+            <input id="search" style="" type="text" class="form-control col">
+        </div>
+        <div class="col align-content-center">
+            <button type="button" class="ml-5 btn btn-primary col" id="search-button">Search</button>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <ul id="result-list" class="col-4 list-group">
+        </ul>
+        <div class="col-8">
+            <div id="map" style="height: 75vh;"></div>
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    const searchInput = document.getElementById('search');
+    const resultList = document.getElementById('result-list');
+    const currentMarkers = [];
+
+
+    var map = L.map('map').setView([49.1391349, - 0.3302305], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    var marker;
+    map.on('click', function (e) {
+        if (marker) {
+            map.removeLayer(marker);
+        }
+        marker = L.marker(e.latlng).addTo(map);
+        var a = e.latlng.lat.toFixed(6);
+        var b = e.latlng.lng.toFixed(6);
+        console.log(a + "-" + b);
+
+        console.log(window.opener);
+
+        try {
+            window.opener.document.getElementById('coordenadas').value = a +":" + b;
+            window.close();
+        } catch (error) {
+            console.error('Error al enviar las coordenadas:', error);
+        }
+    });
+
+    document.getElementById('search-button').addEventListener('click', () => {
+        const query = searchInput.value;
+        fetch('https://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&q=' + query)
+            .then(result => result.json())
+            .then(parsedResult => {
+                waos(parsedResult);
+                //console.log(parsedResult);
+            });
+    });
+
+    // function waos(parsedResult) {
+    //     console.log("entro");
+    //     resultList.innerHTML = "";
+    //     for (const marker of currentMarkers) {
+    //         map.removeLayer(marker);
+    //     }
+    //     map.flyTo(new L.LatLng(20.13847, 1.40625), 2);
+    //     for (const result of parsedResult) {
+    //         const li = document.createElement('li');
+    //         li.classList.add('list-group-item', 'list-group-item-action');
+    //         li.innerHTML = JSON.stringify({
+    //             displayName: result.display_name,
+    //             lat: result.lat,
+    //             lon: result.lon
+    //         });
+    //         console.log(result); 
+    //         li.addEventListener('click', (event) => {
+    //             for (const child of resultList.children) {
+    //                 child.classList.remove('active');
+    //             }
+    //             event.target.classList.add('active');
+    //             const clickedData = JSON.parse(event.target.innerHTML);
+    //             const position = new L.LatLng(clickedData.lat, clickedData.lon);
+    //             map.flyTo(position, 20);
+    //         })
+    //         const position = new L.LatLng(result.lat, result.lon);
+    //         currentMarkers.push(new L.marker(position).addTo(map));
+    //         resultList.appendChild(li);
+    //     }
+    // }
+
+    function waos(parsedResult) {
+        console.log("entro");
+        resultList.innerHTML = "";
+        for (const marker of currentMarkers) {
+            map.removeLayer(marker);
+        }
+        map.flyTo(new L.LatLng(20.13847, 1.40625), 2);
+
+        for (const result of parsedResult) {
+            const li = document.createElement('li');
+            li.classList.add('list-group-item', 'list-group-item-action');
+
+            // Extraer país y ciudad de los detalles de la dirección
+            const country = result.address.country || "País no disponible";
+            const city = (result.display_name) || "Ciudad no disponible";
+
+            // Establecer el contenido del elemento li con país y ciudad
+            li.innerHTML = `${country}, ${city}`;
+
+            console.log(result);
+
+            // Agregar un evento click al li
+            li.addEventListener('click', (event) => {
+                for (const child of resultList.children) {
+                    child.classList.remove('active');
+                }
+                event.target.classList.add('active');
+
+                const lat = result.lat;
+                const lon = result.lon;
+                const position = new L.LatLng(lat, lon);
+                map.flyTo(position, 20);
+            });
+
+            const position = new L.LatLng(result.lat, result.lon);
+            currentMarkers.push(new L.marker(position).addTo(map));
+            resultList.appendChild(li);
+        }
+    }
+
+</script>
+
+
+

@@ -17,6 +17,7 @@
         public string NOMBRE_GENERO { get; set; }
 
         public int ID_DEPARTAMENTO { get; set; }
+        public string NOMBRE_ESTADOUSUARIO { get; set; }
         
     }
 }

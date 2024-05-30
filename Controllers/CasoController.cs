@@ -31,7 +31,10 @@ namespace WebCSI.Controllers
             dt = cn.ProcedimientosSelect(null, "ListarHospi", null);
             List<HospitalModel> hospital = dt.DataTableToList<HospitalModel>();
 
-            
+            dt=cn.ProcedimientosSelect(null, "ListarEstadocaso", null);
+            List<EstadoCasoModel> estado = dt.DataTableToList<EstadoCasoModel>();
+
+            ViewBag.estado = estado;
             ViewBag.muni = muni;
             ViewBag.hospital = hospital;
             ViewBag.departamento = departamento;
@@ -73,8 +76,8 @@ namespace WebCSI.Controllers
         public IActionResult crearcaso(CasoModel a)
         {
             a.FK_ID_PERSONALMEDICO = Convert.ToInt32(User.Identity.Name+"");
-            string[] parametros = { "descri", "ihospital", "tdengue", "paciente", "personalmedico" };
-            string[] datos = { a.DESCRIPCION_CASOREPORTADO, a.FK_ID_HOSPITAL+"", a.FK_ID_TIPODENGUE+"", a.FK_ID_PACIENTE+"", a.FK_ID_PERSONALMEDICO+"" };
+            string[] parametros = { "descri", "ihospital", "tdengue", "paciente", "personalmedico", "direccion"};
+            string[] datos = { a.DESCRIPCION_CASOREPORTADO, a.FK_ID_HOSPITAL+"", a.FK_ID_TIPODENGUE+"", a.FK_ID_PACIENTE+"", a.FK_ID_PERSONALMEDICO+"",a.DIRECCION_CASOREPORTADO };
             cn.procedimientosInEd(parametros, "CrearCaso", datos);  
             return RedirectToAction("Index","Caso");
         }
@@ -93,14 +96,25 @@ namespace WebCSI.Controllers
         public IActionResult actualizar(CasoModel a)
         {
             string[] parametros = { "idc", "descri","estadoc", "ihospital", "tdengue" };
-            string[] datos = { a.ID_CASOREPORTADO+"", a.DESCRIPCION_CASOREPORTADO, a.ESTADO_CASOREPORTADO+"",a.FK_ID_HOSPITAL+"", a.FK_ID_TIPODENGUE+""};
+            string[] datos = { a.ID_CASOREPORTADO+"", a.DESCRIPCION_CASOREPORTADO, a.FK_ID_ESTADOCASO+"",a.FK_ID_HOSPITAL+"", a.FK_ID_TIPODENGUE+""};
             cn.procedimientosInEd(parametros, "ActualizarCaso", datos);
             return RedirectToAction("Index", "Caso");
         }
 
         public IActionResult mapaDeCalor()
         {
-            return View();
+            DataTable dt = cn.ProcedimientosSelect(null, "ListarCasos", null);
+            List<CasoModel> l1 = dt.DataTableToList<CasoModel>();
+
+            DataTable dt1 = cn.ProcedimientosSelect(null, "CantidadCasoHospital", null);
+            List<HospitalModel> lista = dt1.DataTableToList<HospitalModel>();
+
+            ViewBag.lista = l1;
+            return View(lista);
+        }
+        public IActionResult mapPopup()
+        {
+            return View();  
         }
 
     }

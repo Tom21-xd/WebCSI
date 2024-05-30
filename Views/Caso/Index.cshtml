@@ -11,7 +11,7 @@
     <div class="row row-cols-auto " style="justify-content:center;">
 
         @foreach(CasoModel a in Model){
-            if(a.ESTADO_CASOREPORTADO == 1)
+            if(a.NOMBRE_ESTADOCASO != "finalizado")
             {
                 <div class="col mt-5">
                     <div class="card" style="width: 20rem;">
@@ -123,9 +123,16 @@
                             </div>
                             <div class="col">
                                 <label for="" class="form-label">Descripcion</label>
-                                <textarea class="form-control" aria-label="Default select example" id="" name="DESCRIPCION_CASOREPORTADO">
-                                    
-                                </textarea>
+                                <textarea class="form-control" aria-label="Default select example" id="" name="DESCRIPCION_CASOREPORTADO"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <label for="" class="form-label">Coordenadas(Lat,Long)</label>
+                                <input type="text" readonly class="form-control" id="coordenadas" name="DIRECCION_CASOREPORTADO">
+                            </div>
+                            <div class="col align-content-center">
+                                <a class="btn btn-outline-secondary" onclick="openMapPopup()" >Seleccionar</a>
                             </div>
                         </div>
                     </form>
@@ -208,8 +215,14 @@
                             </div>
                             <div class="col">
                                 <label for="" class="form-label">Estado</label>
-                                <select class="form-select" aria-label="Default select example" id="estadoEdi" required name="ESTADO_CASOREPORTADO">
-                                    
+                                <select class="form-select" aria-label="Default select example" id="estadoEdi" required name="FK_ID_ESTADOCASO">
+                                    <option>
+                                        seleccione
+                                    </option>
+                                    @foreach (EstadoCasoModel td in ViewBag.estado)
+                                    {
+                                        <option value="@td.ID_ESTADOCASO" >@td.NOMBRE_ESTADOCASO</option>
+                                    }
                                 </select>
                             </div>
                         </div>
@@ -233,6 +246,9 @@
         crossorigin="anonymous">
 </script>
 <script>
+    var selectDepartamento = document.getElementById('departaEdi');
+    var selectMunicipio = document.getElementById('muniEdi');
+    var selectHospital = document.getElementById('hospiEdi');
     $(document).ready(function() {
         $('#filtro').on('input', function () {
             var filtro = $(this).val();
@@ -324,21 +340,7 @@
                     $('#muniEdi').val(data.iD_MUNICIPIO);
                     $('#hospiEdi').val(data.fK_ID_HOSPITAL);
                     $('#idedit').val(data.iD_CASOREPORTADO);
-
-                    var row = `<option value="-1">
-                                    seleccione
-                                </option>
-                                <option value="1">Activo</option>
-                                <option value="0">Inactivo</option> `;
-                    $('#estadoEdi').append(row);
-                    if (data.estadO_CASOREPORTADO == 1) {
-                        $('#estadoEdi').val(1);
-                    }
-                    else
-                    {
-                        $('#estadoEdi').val(0);
-                    }
-
+                    $('#estadoEdi').val(data.fK_ID_ESTADOCASO);
                     $('#descriEdi').val(data.descripcioN_CASOREPORTADO);
 
                 },
@@ -349,9 +351,7 @@
         });
 
         
-        var selectDepartamento = document.getElementById('departaEdi');
-        var selectMunicipio = document.getElementById('muniEdi');
-        var selectHospital = document.getElementById('hospiEdi');
+    
 
         selectDepartamento.addEventListener('change', function () {
             var departamentoId = this.value;
@@ -388,4 +388,10 @@
         });
 
     });
+
+    function openMapPopup() {
+        var popup = window.open("@Url.Action("mapPopup", "Caso")", "MapPopup", "width=600,height=400");
+        //popup.document.write('<iframe src="@Url.Action("mapPopup","Caso")" style="width:100%;height:100%;border:none;"></iframe>');
+    }
 </script>
+

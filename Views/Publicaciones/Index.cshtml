@@ -7,38 +7,50 @@
 <div class="container">
     <h1 class="mt-5">Publicaciones</h1>
     <div class="d-flex justify-content: flex-start">
-        <input class="form-control mt-4" type="text" placeholder="Buscar"></input>
-    </div>
-    <div class="row row-cols-auto " style="justify-content:center;">
-        
-        @foreach (PublicacionModel p in Model)
-        {
-            <div class="col mt-5">
-                <div class="card" style="width: 35rem;">
-                    <img src="data:image/jpg; base64, @p.Imagen.Imagen" class="card-img-top" style="height:50rem; object-fit: contain;">
-                    <div class="card-body">
-                        <h5 class="card-title">@p.TITULO_PUBLICACION</h5>
-                        <p class="card-text">@p.DESCRIPCION_PUBLICACION</p>
+        <div class="col">
+            <label for="" class="form-label">Filtrar por :</label>
+            <input class="form-control" type="text" placeholder="Buscar" id="filtro" name="filtro">
 
-                    </div>
-                    <div class="card-footer d-flex">
-                        <a href="" class="btn btn-outline-danger">Editar</a>
-                        <a href="" class="btn btn-outline-danger">mas informacion</a>
-                    </div>
-                </div>
-            </div>
-        }
+        </div>
+        <button class="btn btn-outline-success ms-3" id="buscar">Buscar</button>
+        @*         <div class="col ms-5">
+        <label for="" class="form-label">Departamento</label>
+        <select class="form-select">
+        </select>
+        </div>
+        *@
     </div>
 
     <button type="button" id="" class="btn btn-outline-secondary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#Crearpublicacion" value="">
         Crear Publicacion
     </button>
 
+    <div class="row row-cols-auto " style="justify-content:center;" id="contenedor">
+        
+        @foreach (PublicacionModel p in Model)
+        {
+            <div class="col mt-5">
+                <div class="card" style="width: 40rem;">
+                    <img src="data:image/jpg; base64, @p.Imagen.Imagen" class="card-img-top" style="height:50rem; object-fit: contain;">
+                    <div class="card-body">
+                        <h5 class="card-title">@p.TITULO_PUBLICACION</h5>
+                        <p class="card-text">@p.DESCRIPCION_PUBLICACION</p>
+                        
+                    </div>
+                    <div class="card-footer d-flex">
+                        <a href="@Url.Action("ObtenerPubli","Publicaciones",new{idp = @p.ID_PUBLICACION})" class="btn btn-outline-warning">mas informacion</a>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+
 
 </div>
 
 <div class="modal fade" id="Crearpublicacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="crearcasolabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content bg">
             <div class="modal-header">
                 <h5 class="modal-title fs-5 text-center" id="staticBackdropLabel">
@@ -49,15 +61,14 @@
             <div class="modal-body">
                 <div class="container">
                     <form id="CrearPubli" method="post" action="@Url.Action("crearPubli","Publicaciones")" enctype="multipart/form-data">
-                        
                         <div class="row">
                             <div class="col">
                                 <label for="" class="form-label">Titulo de la publicacion</label>
-                                <input class="form-control" required name="TITULO_PUBLICACION"></input>
+                                <input class="form-control" required name="TITULO_PUBLICACION">
                             </div>
                             <div class="col">
                                 <label for="" class="form-label">Imagen </label>
-                                <input type="file" class="form-control" accept="image/*" id="imagen" name="File"></input>
+                                <input type="file" class="form-control" accept="image/*" id="imagen" name="File">
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -74,4 +85,53 @@
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous">
+</script>
+<script>
+    var container = document.getElementById("contenedor");
+
+    $(document).ready(function () {
+        
+        $("#buscar").on("click", function () {
+            var filtro = $('#filtro').val();
+            console.log(filtro);
+            $.ajax({
+                url: '@Url.Action("Filtrar", "Publicaciones")',
+                type: 'POST',
+                data: { filtro: filtro },
+                success: function (data) {
+                    console.log(data);
+                    container.innerHTML = "";
+
+                    data.forEach(function (publi) {
+                        var card = document.createElement("div");
+                        console.log(publi);
+                        card.className = "col mt-5"; // Agregar clases aquí
+                        card.style.width = "45rem";
+                        card.innerHTML = `
+                    <div class="card">
+                            <img src="data:image/jpg;base64,${publi.imagen.imagen}" class="card-img-top" style="height:50rem; object-fit: contain;">
+                        <div class="card-body">
+                                        <h5 class="card-title">${publi.titulO_PUBLICACION}</h5>
+                                        <p class="card-text">Direccion : ${publi.descripcioN_PUBLICACION}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="" class="btn btn-outline-success">Editar</a>
+                            <a href="" class="btn btn-outline-success">mas informacion</a>
+                        </div>
+                    </div>`;
+                        container.appendChild(card);
+                    });
+                },
+                error: function () {
+                    alert('Error al recuperar los datos.');
+                }
+            });
+        });
+
+    });
+
+</script>
