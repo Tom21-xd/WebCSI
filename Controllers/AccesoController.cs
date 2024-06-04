@@ -36,26 +36,33 @@ namespace WebCSI.Controllers
 
             DataTable usu = cn.ProcedimientosSelect(parametros,"ValidarUsuario",datos);
             List<UsuarioModel> usuarios = usu.DataTableToList<UsuarioModel>();
-            if (usuarios.Count != 0)
+            if (usuarios.Count != 0 )
             {
-
-                var claims = new List<Claim>
+                if (usuarios[0].FK_ID_ROL != 2)
                 {
-                    new Claim(ClaimTypes.Name, usuarios[0].ID_USUARIO+""),
-                    new Claim(ClaimTypes.NameIdentifier, usuarios[0].NOMBRE_USUARIO),   
-                    new Claim(ClaimTypes.Email, usuarios[0].CORREO_USUARIO),
-                    new Claim(ClaimTypes.Actor, usuarios[0].FK_ID_ROL+""),
-                };
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, usuarios[0].ID_USUARIO+""),
+                        new Claim(ClaimTypes.NameIdentifier, usuarios[0].NOMBRE_USUARIO),
+                        new Claim(ClaimTypes.Email, usuarios[0].CORREO_USUARIO),
+                        new Claim(ClaimTypes.Actor, usuarios[0].FK_ID_ROL+""),
+                    };
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                 
-                return RedirectToAction("Index", "Usuario");
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                    return RedirectToAction("Index", "Usuario");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "El usuario no tiene permisos para ingresar";
+                }
+                
             }
             else
             {
-                ViewData["Mensaje"] = "Hubo un problema";
+                TempData["ErrorMessage"] = "No se ha encontrado al usuario";
             }
             return RedirectToAction("Login","Acceso");
         }

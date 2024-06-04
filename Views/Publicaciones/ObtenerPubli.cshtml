@@ -6,13 +6,13 @@
 <div class="container text-center mt-5">
     <h1 class="">Informacion Detallada</h1>
     <div class="mt-5 text-center">
-        <div class="row mt-4 justify-content-center">
-            <h3 class="mt-3">@Model.TITULO_PUBLICACION</h3>
+        <div class="row mt-2 mb-2 justify-content-center">
+            <h3 class="">@Model.TITULO_PUBLICACION</h3>
         </div>
         <div class="row mt-4 justify-content-center">
             <div class="col-auto">
-                <img src="data:image/jpg; base64, @Model.Imagen.Imagen" style="height:50rem; object-fit: contain; width:50rem;">
-                <p>Fecha de publicacion: @Model.FECHA_PUBLICACION.Substring(0,10)</p>
+                <img src="data:image/jpg; base64, @Model.Imagen.Imagen" style="height:20rem; object-fit: contain; width:20rem;">
+                <p class="mt-1">Fecha de publicacion: @Model.FECHA_PUBLICACION.Substring(0,10)</p>
             </div>
         </div>
         <div class="row mt-4 justify-content-center">
@@ -32,7 +32,7 @@
         <div class="modal-content bg">
             <div class="modal-header">
                 <h5 class="modal-title fs-5 text-center" id="staticBackdropLabel">
-                    Nueva Publicacion
+                    Editar Publicacion
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

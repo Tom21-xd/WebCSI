@@ -10,9 +10,15 @@
     </button>
     <div class="row row-cols-auto " style="justify-content:center;">
 
-        @foreach(CasoModel a in Model){
-            if(a.NOMBRE_ESTADOCASO != "finalizado")
+        @if(Model.Count == 0)
+        {
+            <h3>Sin Casos Activos</h3>
+        }
+        else
+        {
+            @foreach (CasoModel a in Model)
             {
+
                 <div class="col mt-5">
                     <div class="card" style="width: 20rem;">
                         <div class="card-body">
@@ -24,9 +30,10 @@
                         </div>
                     </div>
                 </div>
+
             }
         }
-        
+
     </div>
 
 </div>
@@ -49,7 +56,7 @@
                                 <input type="text" name="busqueda" class="form-control" onchange="" id="filtro"></input>
                             </div>
                             <div class="col">
-                                <table id="ta" class="table-bordered align-middle border-primary mt-3">
+                                <table id="ta" class="table table-striped align-middle border-primary mt-3">
                                     <thead>
                                     <th class="text-center" style="width: 10%;">Nombre</th>
                                     <th class="text-center " style="width: 10%;">Tipo de sangre</th>
@@ -129,7 +136,7 @@
                         <div class="row mt-3">
                             <div class="col">
                                 <label for="" class="form-label">Coordenadas(Lat,Long)</label>
-                                <input type="text" readonly class="form-control" id="coordenadas" name="DIRECCION_CASOREPORTADO">
+                                <input type="text" class="form-control" id="coordenadas" name="DIRECCION_CASOREPORTADO" required readonly>
                             </div>
                             <div class="col align-content-center">
                                 <a class="btn btn-outline-secondary" onclick="openMapPopup()" >Seleccionar</a>
@@ -269,6 +276,11 @@
                                         </tr>`;
                             $('#ta tbody').append(row);
                         });
+                        $('input[type="checkbox"][name="FK_ID_PACIENTE"]').on('change', function () {
+                            if (this.checked) {
+                                $('input[type="checkbox"][name="FK_ID_PACIENTE"]').not(this).prop('checked', false);
+                            }
+                        });
                     },
                     error: function() {
                         alert('Error al recuperar los datos.');
@@ -391,7 +403,7 @@
 
     function openMapPopup() {
         var popup = window.open("@Url.Action("mapPopup", "Caso")", "MapPopup", "width=600,height=400");
-        //popup.document.write('<iframe src="@Url.Action("mapPopup","Caso")" style="width:100%;height:100%;border:none;"></iframe>');
     }
+
 </script>
 

@@ -11,9 +11,17 @@
     <div class="d-flex justify-content-center vh-100">
 
         <div class="col-md-6 d-flex d-flex justify-content-center align-items-center text-center">
+            
             <div class="border border-white rounded-2">
+                
                 <form class="m-5" asp-action="Validar" asp-controller="Acceso" method="post">
                     <h2 class="mb-4">Iniciar Sesion</h2>
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
                     <div class="row">
                         <label for="correo" class="form-label">Correo </label>
                         <div class="input-group">
