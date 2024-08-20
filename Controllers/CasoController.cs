@@ -13,6 +13,7 @@ namespace WebCSI.Controllers
         Conexion cn = new Conexion();
         public IActionResult Index()
         {
+
             DataTable dt = cn.ProcedimientosSelect(null, "ListarCasosActivos", null);
             List<CasoModel> lista = dt.DataTableToList<CasoModel>();
 

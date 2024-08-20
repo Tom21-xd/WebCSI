@@ -13,6 +13,7 @@ namespace WebCSI.Controllers
 
     public class HospitalController : Controller
     {
+
         Conexion cn = new Conexion();
         ConexionMongo cm = new ConexionMongo();
         public IActionResult Index()
